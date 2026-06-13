@@ -1,0 +1,473 @@
+<!-- PAGINA PROFILO UTENTE COMPLETA -->
+<div id="profilePage" class="content-page" style="display: none;">
+    <div class="page-header">
+        <h1><i class="fas fa-user-circle"></i> Il Mio Profilo</h1>
+    </div>
+    
+    <div class="profile-container">
+        <!-- SEZIONE FOTO E INFO RAPIDE -->
+        <div class="profile-header-card">
+            <div class="profile-avatar-section">
+                <img id="profileAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23ddd' width='150' height='150'/%3E%3Ctext fill='%23999' font-family='Arial' font-size='60' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E👤%3C/text%3E%3C/svg%3E" alt="Avatar" class="profile-avatar-img">
+                <form id="avatarForm" enctype="multipart/form-data">
+                    <input type="file" name="avatar" id="avatarInput" accept="image/*" style="display: none;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('avatarInput').click()">
+                        <i class="fas fa-camera"></i> Cambia Foto
+                    </button>
+                </form>
+            </div>
+            <div class="profile-quick-info">
+                <h2 id="profileDisplayName">Caricamento...</h2>
+                <p id="profileDisplayEmail" class="text-muted"></p>
+                <div class="profile-badges">
+                    <span class="badge badge-primary" id="profileRoleBadge">Utente</span>
+                    <span class="badge badge-info" id="profileMemberSince">Membro da ...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- STATISTICHE PERSONALI -->
+        <div class="profile-section">
+            <h3><i class="fas fa-chart-bar"></i> Le Mie Statistiche</h3>
+            <div class="profile-stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-file stat-icon"></i>
+                    <div class="stat-value" id="statTotalFiles">0</div>
+                    <div class="stat-label">File Totali</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-folder stat-icon"></i>
+                    <div class="stat-value" id="statTotalFolders">0</div>
+                    <div class="stat-label">Cartelle</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-hdd stat-icon"></i>
+                    <div class="stat-value" id="statTotalSize">0 MB</div>
+                    <div class="stat-label">Spazio Usato</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star stat-icon"></i>
+                    <div class="stat-value" id="statFavorites">0</div>
+                    <div class="stat-label">Preferiti</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- INFORMAZIONI PERSONALI -->
+        <div class="profile-section">
+            <h3><i class="fas fa-user"></i> Informazioni Personali</h3>
+            <form id="profileForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="profileFullName" class="form-control" placeholder="Es: Mario Rossi">
+                        <small class="form-text">Il tuo nome completo visualizzato nel profilo</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="profileEmail" class="form-control" placeholder="email@esempio.com">
+                        <small class="form-text">L'email per le comunicazioni importanti</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="profileUsername" class="form-control" disabled>
+                    <small class="form-text">Lo username non può essere modificato</small>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salva Modifiche
+                </button>
+            </form>
+        </div>
+        
+        <!-- SICUREZZA - CAMBIA PASSWORD -->
+        <div class="profile-section">
+            <h3><i class="fas fa-shield-alt"></i> Sicurezza</h3>
+            <form id="passwordForm">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Suggerimento:</strong> Usa una password forte con almeno 8 caratteri, lettere maiuscole e minuscole, numeri e simboli.
+                </div>
+                <div class="form-group">
+                    <label>Password Corrente</label>
+                    <div class="input-group">
+                        <input type="password" id="currentPassword" class="form-control" required placeholder="La tua password attuale">
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('currentPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nuova Password</label>
+                    <div class="input-group">
+                        <input type="password" id="newPassword" class="form-control" required placeholder="Minimo 8 caratteri">
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('newPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-bar-fill" id="strengthBarFill"></div>
+                        </div>
+                        <small id="strengthText">Forza password: </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Conferma Nuova Password</label>
+                    <div class="input-group">
+                        <input type="password" id="confirmPassword" class="form-control" required placeholder="Ripeti la nuova password">
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-key"></i> Cambia Password
+                </button>
+            </form>
+        </div>
+        
+        <!-- PREFERENZE -->
+        <div class="profile-section">
+            <h3><i class="fas fa-cog"></i> Preferenze</h3>
+            <div class="preference-item">
+                <div class="preference-info">
+                    <strong>Tema Interfaccia</strong>
+                    <p class="text-muted">Scegli il tema colore dell'interfaccia (salvato nel browser)</p>
+                </div>
+                <select id="profileThemeSelector" class="form-control" style="max-width: 200px;">
+                    <option value="light">☀️ Chiaro</option>
+                    <option value="dark">🌙 Scuro</option>
+                    <option value="blue">💙 Blu</option>
+                    <option value="green">💚 Verde</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- ATTIVITÀ RECENTE -->
+        <div class="profile-section">
+            <h3><i class="fas fa-history"></i> Attività Recente</h3>
+            <div id="recentActivity" class="activity-list">
+                <!-- Caricato dinamicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Stili profilo migliorati */
+.content-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.page-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.page-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-container,
+.settings-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.profile-header-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-avatar-section {
+    text-align: center;
+}
+
+.profile-avatar-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.profile-quick-info {
+    flex: 1;
+}
+
+.profile-quick-info h2 {
+    margin: 0 0 10px 0;
+    color: var(--text-color);
+}
+
+.text-muted {
+    color: #888;
+    margin: 5px 0;
+}
+
+.profile-badges {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.badge-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+}
+
+.input-group input {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+.password-strength {
+    margin-top: 10px;
+}
+
+.strength-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.strength-bar-fill {
+    height: 100%;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--hover-bg);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.preference-info strong {
+    display: block;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.activity-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+.activity-info strong {
+    display: block;
+    color: var(--text-color);
+}
+
+.activity-info small {
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    .profile-header-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .preference-item {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+</style>
+
+<script>
+// Funzione per mostrare/nascondere password
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const button = input.nextElementSibling.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        button.classList.remove('fa-eye');
+        button.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        button.classList.remove('fa-eye-slash');
+        button.classList.add('fa-eye');
+    }
+}
+
+// Indicatore forza password
+document.getElementById('newPassword')?.addEventListener('input', function() {
+    const password = this.value;
+    const strengthBar = document.getElementById('strengthBarFill');
+    const strengthText = document.getElementById('strengthText');
+    const strengthContainer = document.getElementById('passwordStrength');
+    
+    if (password.length === 0) {
+        strengthContainer.style.display = 'none';
+        return;
+    }
+    
+    strengthContainer.style.display = 'block';
+    
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+    
+    const percentage = (strength / 5) * 100;
+    strengthBar.style.width = percentage + '%';
+    
+    if (strength <= 2) {
+        strengthBar.style.backgroundColor = '#dc3545';
+        strengthText.textContent = 'Forza password: Debole';
+    } else if (strength <= 3) {
+        strengthBar.style.backgroundColor = '#ffc107';
+        strengthText.textContent = 'Forza password: Media';
+    } else {
+        strengthBar.style.backgroundColor = '#28a745';
+        strengthText.textContent = 'Forza password: Forte';
+    }
+});
+
+// Sincronizza tema con themeManager
+document.getElementById('profileThemeSelector')?.addEventListener('change', function() {
+    if (window.themeManager) {
+        window.themeManager.setTheme(this.value);
+    }
+});
+</script>

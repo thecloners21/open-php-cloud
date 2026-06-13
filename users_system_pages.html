@@ -1,0 +1,1013 @@
+<!-- PAGINA GESTIONE UTENTI (solo admin) -->
+<div id="usersPage" class="content-page" style="display: none;">
+    <div class="system-page-header">
+        <div>
+            <h1><i class="fas fa-users"></i> Gestione Utenti</h1>
+            <p class="page-subtitle">Gestisci gli utenti del sistema e i loro permessi</p>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateUserModal()">
+            <i class="fas fa-user-plus"></i> Nuovo Utente
+        </button>
+    </div>
+    
+    <div class="users-grid" id="usersGrid">
+        <!-- Caricato dinamicamente -->
+    </div>
+</div>
+
+<!-- PAGINA IMPOSTAZIONI SISTEMA (solo admin) -->
+<div id="systemPage" class="content-page" style="display: none;">
+    <div class="system-page-header">
+        <div>
+            <h1><i class="fas fa-cog"></i> Impostazioni Sistema</h1>
+            <p class="page-subtitle">Configura le impostazioni globali dell'applicazione</p>
+        </div>
+    </div>
+    
+    <!-- STATISTICHE SISTEMA -->
+    <div class="system-stats-section">
+        <h2 class="section-title"><i class="fas fa-chart-bar"></i> Statistiche Sistema</h2>
+        <div class="system-stats-grid">
+            <div class="system-stat-card">
+                <div class="stat-icon-wrapper" style="background: #e3f2fd;">
+                    <i class="fas fa-users" style="color: #1976d2;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="systemUsersCount">0</div>
+                    <div class="stat-label">Utenti</div>
+                </div>
+            </div>
+            <div class="system-stat-card">
+                <div class="stat-icon-wrapper" style="background: #e8f5e9;">
+                    <i class="fas fa-file" style="color: #388e3c;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="systemFilesCount">0</div>
+                    <div class="stat-label">File</div>
+                </div>
+            </div>
+            <div class="system-stat-card">
+                <div class="stat-icon-wrapper" style="background: #fff3e0;">
+                    <i class="fas fa-folder" style="color: #f57c00;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="systemFoldersCount">0</div>
+                    <div class="stat-label">Cartelle</div>
+                </div>
+            </div>
+            <div class="system-stat-card">
+                <div class="stat-icon-wrapper" style="background: #fce4ec;">
+                    <i class="fas fa-hdd" style="color: #c2185b;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="systemSpaceUsed">0 MB</div>
+                    <div class="stat-label">Spazio Usato</div>
+                </div>
+            </div>
+            <div class="system-stat-card">
+                <div class="stat-icon-wrapper" style="background: #f3e5f5;">
+                    <i class="fas fa-trash" style="color: #7b1fa2;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="systemDeletedCount">0</div>
+                    <div class="stat-label">Cestino</div>
+                </div>
+            </div>
+            <div class="system-stat-card">
+                <div class="stat-icon-wrapper" style="background: #e0f2f1;">
+                    <i class="fas fa-database" style="color: #00796b;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="systemDbSize">0 KB</div>
+                    <div class="stat-label">Database</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CONFIGURAZIONE DATABASE -->
+    <div class="system-config-section">
+        <h2 class="section-title"><i class="fas fa-database"></i> Configurazione Database</h2>
+        <div class="config-card">
+            <form id="dbConfigForm">
+                <div class="config-form-group">
+                    <label for="dbPath">Percorso Database</label>
+                    <div class="input-with-button">
+                        <input type="text" id="dbPath" class="system-input" placeholder="/percorso/al/database.db">
+                        <button type="button" class="btn btn-secondary" onclick="testDatabasePath()">
+                            <i class="fas fa-check-circle"></i> Test
+                        </button>
+                    </div>
+                    <small class="form-helper">Il percorso dove verrà salvato il file del database SQLite</small>
+                </div>
+                
+                <div class="config-form-group">
+                    <label for="uploadDir">Directory Upload</label>
+                    <input type="text" id="uploadDir" class="system-input" placeholder="/percorso/uploads/">
+                    <small class="form-helper">Cartella dove vengono salvati i file caricati</small>
+                </div>
+                
+                <div class="config-form-group">
+                    <label for="thumbnailDir">Directory Miniature</label>
+                    <input type="text" id="thumbnailDir" class="system-input" placeholder="/percorso/thumbnails/">
+                    <small class="form-helper">Cartella dove vengono salvate le miniature delle immagini</small>
+                </div>
+                
+                <div class="alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Attenzione:</strong> Modificare questi percorsi richiede il riavvio dell'applicazione e può causare problemi se i percorsi non sono corretti o non accessibili.
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salva Configurazione
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- PAGINA PROFILO UTENTE -->
+<div id="profilePage" class="content-page" style="display: none;">
+    <div class="system-page-header">
+        <div>
+            <h1><i class="fas fa-user-circle"></i> Il Mio Profilo</h1>
+            <p class="page-subtitle">Gestisci le tue informazioni personali e le preferenze</p>
+        </div>
+    </div>
+    
+    <!-- SEZIONE AVATAR E INFO RAPIDE -->
+    <div class="profile-header-section">
+        <div class="profile-avatar-container">
+            <img id="profileAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23ddd' width='150' height='150'/%3E%3Ctext fill='%23999' font-family='Arial' font-size='60' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E👤%3C/text%3E%3C/svg%3E" alt="Avatar" class="profile-avatar-image">
+            <form id="avatarForm" enctype="multipart/form-data">
+                <input type="file" name="avatar" id="avatarInput" accept="image/*" style="display: none;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fas fa-camera"></i> Cambia Foto
+                </button>
+            </form>
+        </div>
+        <div class="profile-info-container">
+            <h2 id="profileDisplayName" class="profile-name">Caricamento...</h2>
+            <p id="profileDisplayEmail" class="profile-email"></p>
+            <div class="profile-badges-container">
+                <span class="profile-badge badge-primary" id="profileRoleBadge">Utente</span>
+                <span class="profile-badge badge-secondary" id="profileMemberSince">Membro da ...</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- STATISTICHE PERSONALI -->
+    <div class="profile-stats-section">
+        <h2 class="section-title"><i class="fas fa-chart-bar"></i> Le Mie Statistiche</h2>
+        <div class="profile-stats-grid">
+            <div class="profile-stat-card">
+                <div class="stat-icon-wrapper" style="background: #e3f2fd;">
+                    <i class="fas fa-file" style="color: #1976d2;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statTotalFiles">0</div>
+                    <div class="stat-label">File Totali</div>
+                </div>
+            </div>
+            <div class="profile-stat-card">
+                <div class="stat-icon-wrapper" style="background: #fff3e0;">
+                    <i class="fas fa-folder" style="color: #f57c00;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statTotalFolders">0</div>
+                    <div class="stat-label">Cartelle</div>
+                </div>
+            </div>
+            <div class="profile-stat-card">
+                <div class="stat-icon-wrapper" style="background: #fce4ec;">
+                    <i class="fas fa-hdd" style="color: #c2185b;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statTotalSize">0 MB</div>
+                    <div class="stat-label">Spazio Usato</div>
+                </div>
+            </div>
+            <div class="profile-stat-card">
+                <div class="stat-icon-wrapper" style="background: #fff9c4;">
+                    <i class="fas fa-star" style="color: #f9a825;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statFavorites">0</div>
+                    <div class="stat-label">Preferiti</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- INFORMAZIONI PERSONALI -->
+    <div class="profile-form-section">
+        <h2 class="section-title"><i class="fas fa-user"></i> Informazioni Personali</h2>
+        <div class="form-card">
+            <form id="profileForm">
+                <div class="form-row-2col">
+                    <div class="form-group-modern">
+                        <label>Nome Completo</label>
+                        <input type="text" id="profileFullName" class="system-input" placeholder="Es: Mario Rossi">
+                        <small class="form-helper">Il tuo nome completo visualizzato nel profilo</small>
+                    </div>
+                    <div class="form-group-modern">
+                        <label>Email</label>
+                        <input type="email" id="profileEmail" class="system-input" placeholder="email@esempio.com">
+                        <small class="form-helper">L'email per le comunicazioni importanti</small>
+                    </div>
+                </div>
+                <div class="form-group-modern">
+                    <label>Username</label>
+                    <input type="text" id="profileUsername" class="system-input" disabled>
+                    <small class="form-helper">Lo username non può essere modificato</small>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salva Modifiche
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- SICUREZZA -->
+    <div class="profile-form-section">
+        <h2 class="section-title"><i class="fas fa-shield-alt"></i> Sicurezza</h2>
+        <div class="form-card">
+            <form id="passwordForm">
+                <div class="alert-info" style="margin-bottom: 20px;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Suggerimento:</strong> Usa una password forte con almeno 8 caratteri, lettere maiuscole e minuscole, numeri e simboli.
+                    </div>
+                </div>
+                <div class="form-group-modern">
+                    <label>Password Corrente</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="currentPassword" class="system-input" required placeholder="La tua password attuale">
+                        <button type="button" class="input-icon-btn" onclick="togglePassword('currentPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group-modern">
+                    <label>Nuova Password</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="newPassword" class="system-input" required placeholder="Minimo 8 caratteri">
+                        <button type="button" class="input-icon-btn" onclick="togglePassword('newPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength-container" id="passwordStrength" style="display: none;">
+                        <div class="password-strength-bar">
+                            <div class="password-strength-fill" id="strengthBarFill"></div>
+                        </div>
+                        <small id="strengthText" class="form-helper">Forza password: </small>
+                    </div>
+                </div>
+                <div class="form-group-modern">
+                    <label>Conferma Nuova Password</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="confirmPassword" class="system-input" required placeholder="Ripeti la nuova password">
+                        <button type="button" class="input-icon-btn" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-key"></i> Cambia Password
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- PREFERENZE -->
+    <div class="profile-form-section">
+        <h2 class="section-title"><i class="fas fa-palette"></i> Preferenze</h2>
+        <div class="form-card">
+            <div class="preference-row">
+                <div class="preference-info">
+                    <strong>Tema Interfaccia</strong>
+                    <p class="form-helper">Scegli il tema colore dell'interfaccia</p>
+                </div>
+                <select id="profileThemeSelector" class="system-input" style="max-width: 200px;">
+                    <option value="light">☀️ Chiaro</option>
+                    <option value="dark">🌙 Scuro</option>
+                    <option value="blue">💙 Blu</option>
+                    <option value="green">💚 Verde</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ATTIVITÀ RECENTE -->
+    <div class="profile-activity-section">
+        <h2 class="section-title"><i class="fas fa-history"></i> Attività Recente</h2>
+        <div class="activity-card">
+            <div id="recentActivity" class="activity-list-container">
+                <!-- Caricato dinamicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CREA UTENTE -->
+<div class="modal" id="createUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Nuovo Utente</h2>
+            <button class="action-btn" onclick="closeCreateUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="createUserForm">
+                <div class="form-group-modern">
+                    <label>Username *</label>
+                    <input type="text" name="username" class="system-input" required>
+                </div>
+                <div class="form-group-modern">
+                    <label>Email *</label>
+                    <input type="email" name="email" class="system-input" required>
+                </div>
+                <div class="form-group-modern">
+                    <label>Password *</label>
+                    <input type="password" name="password" class="system-input" required>
+                </div>
+                <div class="form-group-modern">
+                    <label>Nome Completo</label>
+                    <input type="text" name="full_name" class="system-input">
+                </div>
+                <div class="form-group-modern">
+                    <label>Ruolo</label>
+                    <select name="role" class="system-input">
+                        <option value="user">Utente</option>
+                        <option value="admin">Amministratore</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Crea Utente
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL MODIFICA UTENTE -->
+<div class="modal" id="editUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Modifica Utente</h2>
+            <button class="action-btn" onclick="closeEditUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="editUserForm">
+                <input type="hidden" name="id" id="editUserId">
+                <div class="form-group-modern">
+                    <label>Username</label>
+                    <input type="text" name="username" id="editUsername" class="system-input" required>
+                </div>
+                <div class="form-group-modern">
+                    <label>Email</label>
+                    <input type="email" name="email" id="editEmail" class="system-input" required>
+                </div>
+                <div class="form-group-modern">
+                    <label>Nome Completo</label>
+                    <input type="text" name="full_name" id="editFullName" class="system-input">
+                </div>
+                <div class="form-group-modern">
+                    <label>Nuova Password (lascia vuoto per non modificare)</label>
+                    <div style="position: relative;">
+                        <input type="password" name="new_password" id="editPassword" class="system-input" placeholder="Inserisci nuova password (opzionale)">
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('editPassword', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small style="color: #888; font-size: 0.85rem; display: block; margin-top: 5px;">
+                        <i class="fas fa-info-circle"></i> Lascia vuoto per mantenere la password attuale
+                    </small>
+                </div>
+                <div class="form-group-modern">
+                    <label>Ruolo</label>
+                    <select name="role" id="editRole" class="system-input">
+                        <option value="user">Utente</option>
+                        <option value="admin">Amministratore</option>
+                    </select>
+                </div>
+                <div class="form-group-modern">
+                    <label>Stato</label>
+                    <select name="is_active" id="editIsActive" class="system-input">
+                        <option value="1">Attivo</option>
+                        <option value="0">Disattivato</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-save"></i> Salva Modifiche
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ============================================
+   STILI PAGINE SISTEMA - VERSIONE INTEGRATA
+   ============================================ */
+
+/* --- LAYOUT GENERALE PAGINE --- */
+.content-page {
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.system-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.system-page-header h1 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+/* --- STATISTICHE SISTEMA --- */
+.system-stats-section {
+    margin-bottom: 30px;
+}
+
+.system-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.system-stat-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.system-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* --- CONFIGURAZIONE SISTEMA --- */
+.system-config-section {
+    margin-bottom: 30px;
+}
+
+.config-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.config-form-group {
+    margin-bottom: 20px;
+}
+
+.config-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.system-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fafafa;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.system-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+}
+
+.system-input:disabled {
+    background: #f0f0f0;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.input-with-button {
+    display: flex;
+    gap: 10px;
+}
+
+.input-with-button .system-input {
+    flex: 1;
+}
+
+.form-helper {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.alert-info {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: #0d47a1;
+}
+
+.alert-info i {
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+/* --- GESTIONE UTENTI --- */
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.user-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.user-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.user-info p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.user-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.user-badge.admin {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.user-badge.user {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* --- PROFILO UTENTE --- */
+.profile-header-section {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-avatar-container {
+    text-align: center;
+}
+
+.profile-avatar-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.profile-info-container {
+    flex: 1;
+}
+
+.profile-name {
+    margin: 0 0 8px 0;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.profile-email {
+    margin: 0 0 15px 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.profile-badges-container {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.badge-secondary {
+    background: #e0e0e0;
+    color: #555;
+}
+
+/* --- STATISTICHE PROFILO --- */
+.profile-stats-section {
+    margin-bottom: 25px;
+}
+
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.profile-stat-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* --- FORM SEZIONI --- */
+.profile-form-section {
+    margin-bottom: 25px;
+}
+
+.form-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.form-group-modern {
+    margin-bottom: 20px;
+}
+
+.form-group-modern label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon .system-input {
+    padding-right: 45px;
+}
+
+.input-icon-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    color: #666;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.input-icon-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* --- PASSWORD STRENGTH --- */
+.password-strength-container {
+    margin-top: 10px;
+}
+
+.password-strength-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.password-strength-fill {
+    height: 100%;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+/* --- PREFERENZE --- */
+.preference-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.preference-info strong {
+    display: block;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* --- ATTIVITÀ RECENTE --- */
+.profile-activity-section {
+    margin-bottom: 25px;
+}
+
+.activity-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.activity-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e3f2fd;
+    color: #1976d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+.activity-info strong {
+    display: block;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.activity-info small {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .content-page {
+        padding: 20px;
+    }
+    
+    .system-page-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .profile-header-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .form-row-2col {
+        grid-template-columns: 1fr;
+    }
+    
+    .preference-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .users-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+// Funzione per mostrare/nascondere password
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const button = input.parentElement.querySelector('.input-icon-btn i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        button.classList.remove('fa-eye');
+        button.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        button.classList.remove('fa-eye-slash');
+        button.classList.add('fa-eye');
+    }
+}
+
+// Indicatore forza password
+document.getElementById('newPassword')?.addEventListener('input', function() {
+    const password = this.value;
+    const strengthBar = document.getElementById('strengthBarFill');
+    const strengthText = document.getElementById('strengthText');
+    const strengthContainer = document.getElementById('passwordStrength');
+    
+    if (password.length === 0) {
+        strengthContainer.style.display = 'none';
+        return;
+    }
+    
+    strengthContainer.style.display = 'block';
+    
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+    
+    const percentage = (strength / 5) * 100;
+    strengthBar.style.width = percentage + '%';
+    
+    if (strength <= 2) {
+        strengthBar.style.backgroundColor = '#dc3545';
+        strengthText.textContent = 'Forza password: Debole';
+    } else if (strength <= 3) {
+        strengthBar.style.backgroundColor = '#ffc107';
+        strengthText.textContent = 'Forza password: Media';
+    } else {
+        strengthBar.style.backgroundColor = '#28a745';
+        strengthText.textContent = 'Forza password: Forte';
+    }
+});
+
+// Sincronizza tema con themeManager
+document.getElementById('profileThemeSelector')?.addEventListener('change', function() {
+    if (window.themeManager) {
+        window.themeManager.setTheme(this.value);
+    }
+});
+
+// Test database path
+async function testDatabasePath() {
+    const path = document.getElementById('dbPath').value;
+    
+    if (!path) {
+        alert('Inserisci un percorso');
+        return;
+    }
+    
+    try {
+        const response = await fetch('api/system.php?action=test_db_path', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ path })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert(data.message);
+        } else {
+            alert(data.error || 'Errore nel test del percorso');
+        }
+    } catch (error) {
+        console.error('Errore:', error);
+        alert('Errore nel test del percorso');
+    }
+}
+</script>

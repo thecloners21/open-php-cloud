@@ -1,0 +1,34 @@
+# Credenziali / segreti
+admin.txt
+
+# Database SQLite runtime
+sb/*.db
+sb/*.sqlite
+sb/*.sqlite3
+
+# Dati caricati dagli utenti
+uploads/*
+avatars/*
+thumbnails/*
+!uploads/.gitkeep
+!avatars/.gitkeep
+!thumbnails/.gitkeep
+
+# Tool di amministrazione DB (non distribuire pubblicamente)
+phpliteadmin_*.php
+
+# File di test / sviluppo
+test_*.php
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Log e temporanei
+*.log
+*.bak
+*.orig
