@@ -8,7 +8,9 @@ Parte della collezione [**The Cloners**](https://thecloners.altervista.org) — 
 
 ![Open PhP Cloud — interfaccia](openCloud-php.png)
 
-> Demo dal vivo: in fase di pubblicazione su [thecloners.altervista.org](https://thecloners.altervista.org).
+> 🔎 **Anteprima statica dell'interfaccia** (solo UI, senza backend): **https://thecloners21.github.io/open-php-cloud/**
+>
+> Demo completa funzionante (con backend PHP): in fase di pubblicazione su [thecloners.altervista.org](https://thecloners.altervista.org).
 
 ## Funzionalità
 
